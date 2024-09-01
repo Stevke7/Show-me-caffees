@@ -4,27 +4,22 @@ import Image from "next/image";
 import logo from "@/public/two-beans.svg";
 import { IconMapPinFilled } from "@tabler/icons-react";
 import NavCards from "./sidenav-cards/navCards";
-import { Bounce, ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import UseTrackLocation from "@/app/lib/use-track-location";
+import { useEffect } from "react";
 
 export default function SideNav() {
-	const notify = () =>
-		toast.warn("🦄 Something is not right!", {
-			position: "top-right",
-			autoClose: 5000,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-			theme: "dark",
-			transition: Bounce,
-		});
-	const showNearbyPlaces = () => {
-		console.log("Loading nearby places.....");
-		notify();
+	const { handleTrackLocation, latLong, locationErrorMsg, isFindingLocation } =
+		UseTrackLocation();
+
+	const handleBtnClick = () => {
+		handleTrackLocation();
 	};
 
+	useEffect(() => {
+		console.log({ latLong, locationErrorMsg });
+	}, [latLong, locationErrorMsg]);
 	return (
 		<div className="w-1/4 h-[100vh] bg-nav-bg px-2 py-8 flex flex-col">
 			<div className="flex flex-col w-full items-center">
@@ -37,9 +32,9 @@ export default function SideNav() {
 					className="flex flex-row w-[180px] h-16 bg-bg-btn my-8 rounded-md text-white justify-center items-center gap-4"
 					title="Show me places"
 					type="button"
-					onClick={showNearbyPlaces}
+					onClick={handleBtnClick}
 				>
-					Show places
+					{isFindingLocation ? "Locating" : "Show me places"}
 					<IconMapPinFilled className="text-white" />
 				</button>
 				<ToastContainer />
