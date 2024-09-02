@@ -4,14 +4,13 @@ import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import UseTrackLocation from "./use-track-location";
 
-mapboxgl.accessToken =
-	"pk.eyJ1IjoiemVtbzY5IiwiYSI6ImNseXltbzFrajA5dnIyaXM2cTJraTdoMGUifQ.2EcWIoChIBwyWJjK_hoSWg";
-
 export default function CoffeeMap() {
 	const mapContainerRef = useRef<HTMLDivElement | null>(null);
-	const { latLong } = UseTrackLocation();
+	const { latLong, locationErrorMsg } = UseTrackLocation();
 
 	useEffect(() => {
+		console.log("lATITDE AND LONGITUDE", latLong, locationErrorMsg);
+		mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN || "";
 		if (mapContainerRef.current) {
 			const map = new mapboxgl.Map({
 				container: mapContainerRef.current as HTMLElement,
@@ -35,7 +34,7 @@ export default function CoffeeMap() {
 
 			return () => map.remove();
 		}
-	}, []);
+	}, [latLong]);
 
 	return <div ref={mapContainerRef} className="w-full h-[100vh] rounded-md" />;
 }
