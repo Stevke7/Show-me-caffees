@@ -59,7 +59,7 @@ export default function SideNav() {
       <div className="flex flex-col w-full items-center">
         <section className="flex flex-row w-full px-4 pb-8 gap-1 items-center">
           <Image src={logo} className="w-10 h-10" alt="coffee-logo" />
-          <p className="text-bg-btn">CoffeeNearMe</p>
+          <p className="text-bg-btn">PlacesNearMe</p>
         </section>
         <input
           title="Search"
